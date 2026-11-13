@@ -61,27 +61,15 @@ npm run dev
 
 ## GitHub Pages Deployment
 
-### Step 1 — Update config files
+Live URL: **https://Harsh20-gif.github.io/SalmanDesign/**
 
-1. **`vite.config.js`** — set `base` to your repo name:
-   ```js
-   base: '/your-repo-name/',
-   ```
-
-2. **`package.json`** — update `homepage`:
-   ```json
-   "homepage": "https://your-github-username.github.io/your-repo-name/"
-   ```
-
-### Step 2 — Push to GitHub
+### Deployment Steps
 
 ```bash
-git init
-git add .
-git commit -m "Initial commit"
+git remote add origin https://github.com/Harsh20-gif/SalmanDesign.git
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
 git push -u origin main
+npm run deploy
 ```
 
 ### Step 3 — Deploy

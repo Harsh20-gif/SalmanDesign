@@ -1,9 +1,9 @@
 {
-  "name": "salman-design-demo",
+  "name": "salman-design",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "homepage": "https://yourgithubusername.github.io/salman-design-demo/",
+  "homepage": "https://Harsh20-gif.github.io/SalmanDesign/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
