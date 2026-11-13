@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react'
-import { FaHardHat, FaPhone } from 'react-icons/fa'
+import { motion, AnimatePresence } from 'framer-motion'
+import { LuCompass, LuPhone, LuArrowUpRight } from 'react-icons/lu'
 import { COMPANY, PHONE } from '../data/content'
 import './Navbar.css'
 
 const NAV_LINKS = [
-  { label: 'Home',      href: '#home' },
-  { label: 'About',     href: '#about' },
-  { label: 'Services',  href: '#services' },
-  { label: 'Projects',  href: '#projects' },
-  { label: 'Contact',   href: '#contact' },
+  { label: 'Home', href: '#home' },
+  { label: 'About', href: '#about' },
+  { label: 'Services', href: '#services' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'Process', href: '#process' },
+  { label: 'Contact', href: '#contact' },
 ]
 
 export default function Navbar() {
@@ -16,100 +18,138 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Close menu on ESC key
   useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') setMenuOpen(false) }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setMenuOpen(false)
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
-  // Prevent body scroll when menu is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
+    return () => {
+      document.body.style.overflow = ''
+    }
   }, [menuOpen])
 
   const handleNavClick = (href) => {
     setMenuOpen(false)
-    // Smooth-scroll manually in case Lenis isn't active yet
     const target = document.querySelector(href)
-    if (target) target.scrollIntoView({ behavior: 'smooth' })
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   return (
     <>
       <header className={`navbar ${scrolled ? 'scrolled' : 'top'}`} role="banner">
         <div className="container navbar-inner">
-          {/* Logo */}
-          <a href="#home" className="nav-logo" aria-label="Salman Design Home">
-            <FaHardHat className="nav-logo-icon" aria-hidden="true" />
+          {/* Logo with architect badge */}
+          <a
+            href="#home"
+            className="nav-logo"
+            onClick={(e) => {
+              e.preventDefault()
+              handleNavClick('#home')
+            }}
+            aria-label="Salman Design & Consultant"
+          >
+            <div className="nav-logo-badge" aria-hidden="true">
+              <LuCompass />
+            </div>
             <div className="nav-logo-text">
-              {COMPANY.name}
-              <span>{COMPANY.tagline}</span>
+              <span className="nav-logo-title">{COMPANY.name}</span>
+              <span className="nav-logo-sub">{COMPANY.tagline}</span>
             </div>
           </a>
 
-          {/* Desktop links */}
-          <nav className="nav-links" aria-label="Main navigation">
-            {NAV_LINKS.map((l) => (
+          {/* Desktop Nav */}
+          <nav className="nav-links" aria-label="Main Navigation">
+            {NAV_LINKS.map((link) => (
               <a
-                key={l.href}
-                href={l.href}
+                key={link.href}
+                href={link.href}
                 className="nav-link"
-                onClick={(e) => { e.preventDefault(); handleNavClick(l.href) }}
+                onClick={(e) => {
+                  e.preventDefault()
+                  handleNavClick(link.href)
+                }}
               >
-                {l.label}
+                {link.label}
               </a>
             ))}
-            <a href={`tel:${PHONE}`} className="nav-cta" aria-label="Call us now">
-              <FaPhone aria-hidden="true" /> Call Now
+            <a href={`tel:${PHONE}`} className="nav-cta" aria-label="Call Salman Design">
+              <LuPhone aria-hidden="true" />
+              <span>Call Now</span>
             </a>
           </nav>
 
-          {/* Mobile hamburger */}
+          {/* Hamburger Button */}
           <button
             className={`hamburger ${menuOpen ? 'open' : ''}`}
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            onClick={() => setMenuOpen((prev) => !prev)}
+            aria-label={menuOpen ? 'Close Menu' : 'Open Menu'}
             aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((v) => !v)}
           >
-            <span /><span /><span />
+            <span />
+            <span />
+            <span />
           </button>
         </div>
       </header>
 
-      {/* Mobile Menu */}
-      <nav
-        className={`mobile-menu ${menuOpen ? 'open' : ''}`}
-        aria-label="Mobile navigation"
-        aria-hidden={!menuOpen}
-      >
-        {NAV_LINKS.map((l) => (
-          <a
-            key={l.href}
-            href={l.href}
-            className="mobile-nav-link"
-            tabIndex={menuOpen ? 0 : -1}
-            onClick={(e) => { e.preventDefault(); handleNavClick(l.href) }}
+      {/* Fullscreen Mobile Menu Overlay */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            className="mobile-overlay"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
-            {l.label}
-          </a>
-        ))}
-        <a
-          href={`tel:${PHONE}`}
-          className="mobile-cta"
-          tabIndex={menuOpen ? 0 : -1}
-          aria-label="Call us now"
-        >
-          <FaPhone aria-hidden="true" /> Call Now
-        </a>
-      </nav>
+            <nav className="mobile-nav-list" aria-label="Mobile Navigation">
+              {NAV_LINKS.map((link, idx) => (
+                <motion.a
+                  key={link.href}
+                  href={link.href}
+                  className="mobile-nav-item"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.08 * idx, duration: 0.4 }}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    handleNavClick(link.href)
+                  }}
+                >
+                  <span>{link.label}</span>
+                </motion.a>
+              ))}
+            </nav>
+
+            <motion.div
+              className="mobile-bottom-info"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45, duration: 0.4 }}
+            >
+              <a href={`tel:${PHONE}`} className="mobile-cta-btn" aria-label="Call Now">
+                <LuPhone aria-hidden="true" />
+                <span>Call +91 98374 18514</span>
+              </a>
+              <p className="mobile-address-hint">Nehtaur (Bijnor), Uttar Pradesh</p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }
-

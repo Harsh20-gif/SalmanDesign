@@ -1,91 +1,242 @@
-import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { FaPhone, FaHardHat, FaChevronDown } from 'react-icons/fa'
+import { LuAward, LuBox, LuClock, LuPhone, LuHardHat } from 'react-icons/lu'
 import { HERO, PHONE } from '../data/content'
 import './Hero.css'
 
-/* Stagger animation variants */
-const containerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.18 } },
-}
-
-const itemVariants = {
-  hidden:   { opacity: 0, y: 32 },
-  visible:  { opacity: 1, y: 0, transition: { duration: .6, ease: [.25,.8,.25,1] } },
-}
+const SKYLINE_DATA = [
+  { w: 32, h: 45, win: 2 },
+  { w: 46, h: 72, win: 4 },
+  { w: 38, h: 56, win: 3 },
+  { w: 54, h: 88, win: 5 },
+  { w: 42, h: 62, win: 3 },
+  { w: 48, h: 78, win: 4 },
+  { w: 36, h: 52, win: 2 },
+  { w: 58, h: 84, win: 5 },
+  { w: 40, h: 68, win: 3 },
+  { w: 50, h: 75, win: 4 },
+]
 
 export default function Hero() {
-  const handleScroll = (href) => {
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+  const words = [
+    { text: 'Building', isGradient: false },
+    { text: 'Your', isGradient: false },
+    { text: 'Dreams', isGradient: true },
+    { text: 'with', isGradient: false },
+    { text: 'Precision', isGradient: false },
+    { text: '&', isGradient: false },
+    { text: 'Trust', isGradient: false },
+  ]
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.09, delayChildren: 0.15 },
+    },
+  }
+
+  const wordVariants = {
+    hidden: { opacity: 0, y: 24 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
+    },
+  }
+
+  const scrollTo = (id) => {
+    document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
-    <section className="hero blueprint-bg" id="home" aria-label="Hero">
+    <section className="hero blueprint-drift" id="home" aria-label="Hero Section">
+      {/* Background Soft Glows */}
+      <div className="hero-glow-1" aria-hidden="true" />
+      <div className="hero-glow-2" aria-hidden="true" />
+
       <div className="container hero-inner">
-        {/* Text */}
-        <motion.div
-          className="hero-text"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.div className="hero-badge" variants={itemVariants}>
-            <FaHardHat aria-hidden="true" />
-            Civil Engineering & Design
+        {/* Left Column: Headline & Action */}
+        <div className="hero-content">
+          <motion.div
+            className="hero-tag"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <LuHardHat className="hero-tag-icon" aria-hidden="true" />
+            <span>Er. M. Salman • B.Tech (Civil)</span>
           </motion.div>
 
-          <motion.h1 className="hero-headline" variants={itemVariants}>
-            {HERO.headline.split('\n').map((line, i) =>
-              i === 0
-                ? <span key={i}>{line}<br /></span>
-                : <span key={i} className="highlight">{line}</span>
-            )}
+          <motion.h1
+            className="hero-headline"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {words.map((w, idx) => (
+              <motion.span
+                key={idx}
+                variants={wordVariants}
+                style={{ display: 'inline-block', marginRight: '0.28em' }}
+                className={w.isGradient ? 'gradient-text' : ''}
+              >
+                {w.text}
+              </motion.span>
+            ))}
           </motion.h1>
 
-          <motion.p className="hero-subtext" variants={itemVariants}>
+          <motion.p
+            className="hero-subtext"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.55, duration: 0.65 }}
+          >
             {HERO.subtext}
           </motion.p>
 
-          <motion.div className="hero-actions" variants={itemVariants}>
+          <motion.div
+            className="hero-actions"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.65 }}
+          >
             <button
-              className="hero-cta-primary"
-              onClick={() => handleScroll('#projects')}
-              aria-label="View our projects"
+              className="btn-primary-shine"
+              onClick={() => scrollTo('#projects')}
+              aria-label="View our completed projects"
             >
-              {HERO.cta1.label}
+              <span>{HERO.cta1.label}</span>
             </button>
             <a
-              href={HERO.cta2.href}
-              className="hero-cta-secondary"
-              aria-label="Call us now"
+              href={`tel:${PHONE}`}
+              className="btn-glass"
+              aria-label="Call Salman Design now"
             >
-              <FaPhone aria-hidden="true" />
-              {HERO.cta2.label}
+              <LuPhone aria-hidden="true" />
+              <span>{HERO.cta2.label}</span>
             </a>
           </motion.div>
-        </motion.div>
+        </div>
 
-        {/* 3D Building Visual */}
-        <div className="hero-visual" aria-hidden="true">
-          <div className="building-scene">
-            <div className="crane"><div className="crane-hook" /></div>
-            {[180, 240, 200, 160, 220].map((h, i) => (
-              <div key={i} className="building-block" style={{ height: h }}>
-                <div className="building-side" />
+        {/* Right Column: 3D Isometric Rotating Building & Floating Badges */}
+        <div className="hero-visual-col" aria-hidden="true">
+          {/* Floating badges */}
+          <div className="floating-badge badge-1">
+            <LuAward className="badge-icon" />
+            <span>10+ Years Experience</span>
+          </div>
+
+          <div className="floating-badge badge-2">
+            <LuBox className="badge-icon" />
+            <span>3D Visualization</span>
+          </div>
+
+          <div className="floating-badge badge-3">
+            <LuClock className="badge-icon" />
+            <span>On-Time Delivery</span>
+          </div>
+
+          {/* 3D Isometric Tower */}
+          <div className="iso-scene">
+            <div className="building-tower">
+              {/* Floor 1 */}
+              <div className="iso-slab slab-1">
+                <div className="slab-top" />
+                <div className="slab-front">
+                  <div className="iso-window" />
+                  <div className="iso-window" />
+                  <div className="iso-window" />
+                </div>
+                <div className="slab-side">
+                  <div className="iso-window" />
+                  <div className="iso-window" />
+                </div>
               </div>
-            ))}
-            <div className="hero-ground" />
+
+              {/* Floor 2 */}
+              <div className="iso-slab slab-2">
+                <div className="slab-top" />
+                <div className="slab-front">
+                  <div className="iso-window" />
+                  <div className="iso-window" />
+                  <div className="iso-window" />
+                </div>
+                <div className="slab-side">
+                  <div className="iso-window" />
+                  <div className="iso-window" />
+                </div>
+              </div>
+
+              {/* Floor 3 */}
+              <div className="iso-slab slab-3">
+                <div className="slab-top" />
+                <div className="slab-front">
+                  <div className="iso-window" />
+                  <div className="iso-window" />
+                  <div className="iso-window" />
+                </div>
+                <div className="slab-side">
+                  <div className="iso-window" />
+                  <div className="iso-window" />
+                </div>
+              </div>
+
+              {/* Floor 4 */}
+              <div className="iso-slab slab-4">
+                <div className="slab-top" />
+                <div className="slab-front">
+                  <div className="iso-window" />
+                  <div className="iso-window" />
+                </div>
+                <div className="slab-side">
+                  <div className="iso-window" />
+                </div>
+              </div>
+
+              {/* Roof Deck */}
+              <div className="iso-slab slab-roof">
+                <div className="slab-top">
+                  <div className="roof-deck">H</div>
+                  <div className="roof-spire" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Scroll hint */}
-      <div className="hero-scroll-hint" aria-hidden="true">
+      {/* Skyline at Bottom */}
+      <div className="hero-skyline" aria-hidden="true">
+        {SKYLINE_DATA.map((b, i) => (
+          <div
+            key={i}
+            className="skyline-building"
+            style={{ width: `${b.w}px`, height: `${b.h}px` }}
+          >
+            {Array.from({ length: b.win }).map((_, wi) => (
+              <div
+                key={wi}
+                className="skyline-win"
+                style={{ animationDelay: `${(i * 0.4 + wi * 0.3).toFixed(1)}s` }}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+
+      {/* Bouncing Mouse Scroll Indicator */}
+      <div
+        className="scroll-indicator"
+        onClick={() => scrollTo('#about')}
+        role="button"
+        tabIndex={0}
+        aria-label="Scroll down to About section"
+      >
+        <div className="mouse-pill" aria-hidden="true">
+          <div className="mouse-wheel" />
+        </div>
         <span>Scroll</span>
-        <FaChevronDown />
       </div>
     </section>
   )
 }
-

@@ -1,124 +1,182 @@
 /* ── Services Section ── */
-.services {
-  background: var(--white);
+.services-section {
+  background-color: var(--bg-dark);
+  position: relative;
+  overflow: hidden;
 }
 
 .services-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.4rem;
+  gap: 1.8rem;
 }
 
-/* Service card – 3D tilt effect */
-.service-card {
-  background: var(--white);
-  border-radius: var(--radius-md);
-  padding: 2rem 1.6rem;
-  border: 1px solid rgba(15,27,45,.08);
-  cursor: default;
+/* Card 3D Flip Container */
+.service-flip-card {
+  height: 320px;
+  perspective: 1200px;
+  cursor: pointer;
+  border-radius: var(--radius-card);
   position: relative;
-  overflow: hidden;
-  transition:
-    transform .4s cubic-bezier(.25,.8,.25,1),
-    box-shadow .4s cubic-bezier(.25,.8,.25,1);
-  box-shadow:
-    0 2px 8px rgba(15,27,45,.08),
-    0 1px 2px rgba(15,27,45,.06);
+}
+
+.service-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
   transform-style: preserve-3d;
-  /* Layered depth shadow for 3D feel */
-  transform: perspective(800px) rotateX(0deg) rotateY(0deg) translateZ(0);
-  will-change: transform;
+  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  border-radius: var(--radius-card);
 }
 
-/* Shimmer top-left gradient */
-.service-card::before {
-  content: '';
+/* Flip trigger on hover (desktop) or active state */
+@media (hover: hover) {
+  .service-flip-card:hover .service-flip-inner {
+    transform: rotateY(180deg);
+  }
+}
+
+.service-flip-card.flipped .service-flip-inner {
+  transform: rotateY(180deg);
+}
+
+/* Front & Back Faces */
+.flip-front,
+.flip-back {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent) 0%, #d4850e 100%);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--transition);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius-card);
+  padding: 2.2rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
 }
 
-/* Inner highlight for embossed look */
-.service-card::after {
+/* Front Face */
+.flip-front {
+  background: linear-gradient(145deg, rgba(16, 27, 46, 0.95) 0%, rgba(10, 17, 30, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Cursor Following Spotlight Glow */
+.flip-front::before {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, rgba(255,255,255,.12) 0%, transparent 60%);
+  background: radial-gradient(
+    300px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+    rgba(255, 159, 28, 0.12),
+    transparent 80%
+  );
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-/* Hover / active 3D lift */
-@media (hover: hover) {
-  .service-card:hover {
-    transform: perspective(800px) rotateX(-4deg) rotateY(4deg) translateY(-8px);
-    box-shadow:
-      0 20px 50px rgba(15,27,45,.18),
-      0 8px 20px rgba(245,166,35,.12),
-      inset 0 1px 0 rgba(255,255,255,.2);
-  }
-  .service-card:hover::before { transform: scaleX(1); }
+.service-flip-card:hover .flip-front::before {
+  opacity: 1;
 }
 
-/* Touch press effect for mobile */
-.service-card:active {
-  transform: perspective(800px) rotateX(2deg) translateY(2px) scale(.98);
-  box-shadow: 0 4px 16px rgba(15,27,45,.14);
-}
-
-.service-icon-wrap {
-  width: 60px;
-  height: 60px;
-  border-radius: 14px;
-  background: rgba(245,166,35,.1);
+.service-icon-box {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255, 159, 28, 0.15) 0%, rgba(255, 184, 77, 0.05) 100%);
+  border: 1px solid rgba(255, 159, 28, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.7rem;
+  font-size: 1.85rem;
   color: var(--accent);
-  margin-bottom: 1.2rem;
-  position: relative;
-  transition: transform var(--transition), box-shadow var(--transition);
-  /* Embossed shadow */
-  box-shadow:
-    0 4px 12px rgba(245,166,35,.2),
-    inset 0 1px 0 rgba(255,255,255,.5),
-    inset 0 -1px 0 rgba(0,0,0,.08);
+  box-shadow: 0 0 20px rgba(255, 159, 28, 0.2);
+  transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
-@media (hover: hover) {
-  .service-card:hover .service-icon-wrap {
-    transform: translateZ(20px) scale(1.08);
-    box-shadow:
-      0 8px 24px rgba(245,166,35,.35),
-      inset 0 1px 0 rgba(255,255,255,.5);
+.service-flip-card:hover .service-icon-box {
+  transform: scale(1.08) rotate(4deg);
+  border-color: var(--accent);
+}
+
+.service-card-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-light);
+  line-height: 1.25;
+  margin-top: 1rem;
+}
+
+.flip-hint-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-heading);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: auto;
+}
+
+/* Back Face */
+.flip-back {
+  background: linear-gradient(145deg, #13223A 0%, #0B1423 100%);
+  border: 1px solid rgba(255, 159, 28, 0.4);
+  transform: rotateY(180deg);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+}
+
+.flip-back-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flip-back-desc {
+  font-size: 0.94rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.65;
+  margin-block: 0.8rem;
+}
+
+.flip-back-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--accent);
+  padding: 0.6rem 1rem;
+  background: rgba(255, 159, 28, 0.12);
+  border: 1px solid rgba(255, 159, 28, 0.3);
+  border-radius: var(--radius-pill);
+  transition: all 0.25s ease;
+  width: fit-content;
+}
+
+.flip-back-action:hover {
+  background: var(--accent);
+  color: #0B1220;
+}
+
+@media (min-width: 640px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-.service-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--primary);
-  margin-bottom: .6rem;
-}
-
-.service-desc {
-  font-size: .88rem;
-  color: var(--text-muted);
-  line-height: 1.65;
-}
-
-@media (min-width: 480px) {
-  .services-grid { grid-template-columns: 1fr 1fr; }
-}
-
 @media (min-width: 1024px) {
-  .services-grid { grid-template-columns: repeat(3, 1fr); }
+  .services-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
-

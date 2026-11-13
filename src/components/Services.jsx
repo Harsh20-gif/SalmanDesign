@@ -1,80 +1,128 @@
-import { useRef } from 'react'
+import { useState, useRef } from 'react'
+import { motion } from 'framer-motion'
 import {
-  FaBuilding, FaHardHat, FaDraftingCompass, FaCalculator,
-} from 'react-icons/fa'
-import { MdChair, MdViewInAr } from 'react-icons/md'
+  LuBuilding2,
+  LuArmchair,
+  LuBox,
+  LuHardHat,
+  LuCompass,
+  LuCalculator,
+  LuArrowRight,
+  LuRotateCw,
+} from 'react-icons/lu'
 import { SERVICES } from '../data/content'
 import './Services.css'
 
-/* Map icon names from content.js to actual components */
 const ICON_MAP = {
-  FaBuilding:        <FaBuilding aria-hidden="true" />,
-  MdChair:           <MdChair aria-hidden="true" />,
-  MdViewInAr:        <MdViewInAr aria-hidden="true" />,
-  FaHardHat:         <FaHardHat aria-hidden="true" />,
-  FaDraftingCompass: <FaDraftingCompass aria-hidden="true" />,
-  FaCalculator:      <FaCalculator aria-hidden="true" />,
+  FaBuilding: <LuBuilding2 aria-hidden="true" />,
+  MdChair: <LuArmchair aria-hidden="true" />,
+  MdViewInAr: <LuBox aria-hidden="true" />,
+  FaHardHat: <LuHardHat aria-hidden="true" />,
+  FaDraftingCompass: <LuCompass aria-hidden="true" />,
+  FaCalculator: <LuCalculator aria-hidden="true" />,
 }
 
-function ServiceCard({ svc, index, icon }) {
+function ServiceCard({ svc, index }) {
+  const [flipped, setFlipped] = useState(false)
   const cardRef = useRef(null)
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const rect = cardRef.current.getBoundingClientRect()
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
-    const centerX = rect.width / 2
-    const centerY = rect.height / 2
-    const rotateX = ((centerY - y) / centerY) * 10
-    const rotateY = ((x - centerX) / centerX) * 10
-    cardRef.current.style.transform = `perspective(800px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-8px)`
+    cardRef.current.style.setProperty('--spotlight-x', `${x}px`)
+    cardRef.current.style.setProperty('--spotlight-y', `${y}px`)
   }
 
-  const handleMouseLeave = () => {
-    if (!cardRef.current) return
-    cardRef.current.style.transform = ''
+  const toggleFlip = () => {
+    setFlipped((prev) => !prev)
+  }
+
+  const handleConsultClick = (e) => {
+    e.stopPropagation()
+    const contactSection = document.querySelector('#contact')
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   return (
-    <article
+    <motion.div
       ref={cardRef}
+      className={`service-flip-card ${flipped ? 'flipped' : ''}`}
       onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="service-card reveal"
-      style={{ transitionDelay: `${index * 0.08}s` }}
-      aria-label={svc.title}
+      onClick={toggleFlip}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.55, delay: index * 0.08 }}
+      role="button"
+      tabIndex={0}
+      aria-label={`${svc.title} service. Click or tap to flip for details.`}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          toggleFlip()
+        }
+      }}
     >
-      <div className="service-icon-wrap">
-        {icon}
+      <div className="service-flip-inner">
+        {/* Front Face */}
+        <div className="flip-front">
+          <div>
+            <div className="service-icon-box">
+              {ICON_MAP[svc.iconName] || <LuBuilding2 />}
+            </div>
+            <h3 className="service-card-title">{svc.title}</h3>
+          </div>
+
+          <div className="flip-hint-tag">
+            <LuRotateCw aria-hidden="true" />
+            <span>Hover / Tap to view details</span>
+          </div>
+        </div>
+
+        {/* Back Face */}
+        <div className="flip-back">
+          <div>
+            <div className="flip-back-title">
+              <span>{svc.title}</span>
+              <LuRotateCw aria-hidden="true" style={{ fontSize: '1rem' }} />
+            </div>
+            <p className="flip-back-desc">{svc.desc}</p>
+          </div>
+
+          <button
+            type="button"
+            className="flip-back-action"
+            onClick={handleConsultClick}
+            aria-label={`Inquire about ${svc.title}`}
+          >
+            <span>Inquire Now</span>
+            <LuArrowRight aria-hidden="true" />
+          </button>
+        </div>
       </div>
-      <h3 className="service-title">{svc.title}</h3>
-      <p className="service-desc">{svc.desc}</p>
-    </article>
+    </motion.div>
   )
 }
 
 export default function Services() {
   return (
-    <section className="services section-padding blueprint-bg" id="services">
+    <section className="services-section section-padding blueprint-drift" id="services" aria-label="Services Offered">
       <div className="container">
         <div className="section-header">
-          <span className="section-label">What We Offer</span>
-          <h2 className="section-title">Our Expert Services</h2>
-          <p className="section-desc">
-            From concept to completion — we handle every stage of your project with precision.
+          <span className="section-eyebrow">Comprehensive Expertise</span>
+          <h2 className="section-title light">Our Core Engineering Services</h2>
+          <p className="section-desc light">
+            End-to-end turnkey solutions from architectural blueprints and 3D views to on-site civil execution and cost estimation.
           </p>
         </div>
 
         <div className="services-grid">
           {SERVICES.map((svc, i) => (
-            <ServiceCard
-              key={svc.id}
-              svc={svc}
-              index={i}
-              icon={ICON_MAP[svc.iconName]}
-            />
+            <ServiceCard key={svc.id} svc={svc} index={i} />
           ))}
         </div>
       </div>

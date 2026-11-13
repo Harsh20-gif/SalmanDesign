@@ -1,38 +1,60 @@
 /* =============================================================
-   src/index.css  –  Global styles, CSS variables, resets
+   src/index.css – Global Design System & Motion Tokens
    ============================================================= */
 
-/* ── Google Fonts already loaded in index.html ── */
-
-/* ── CSS Custom Properties ── */
 :root {
-  --primary:   #0F1B2D;
-  --accent:    #F5A623;
-  --steel:     #5B6770;
-  --concrete:  #E9ECEF;
-  --white:     #FFFFFF;
-  --text:      #1E2A36;
-  --text-muted:#5B6770;
+  /* Colors */
+  --bg-dark: #0B1220;
+  --bg-dark-surface: #101B2E;
+  --bg-dark-card: rgba(255, 255, 255, 0.04);
+  --bg-light: #F4F6F8;
+  --bg-light-surface: #FFFFFF;
 
-  --shadow-sm: 0 2px 8px rgba(15,27,45,.12);
-  --shadow-md: 0 8px 24px rgba(15,27,45,.18);
-  --shadow-lg: 0 20px 60px rgba(15,27,45,.25);
+  --accent: #FF9F1C;
+  --accent-light: #FFB84D;
+  --accent-gradient: linear-gradient(135deg, #FF9F1C 0%, #FFB84D 100%);
+  --accent-secondary: #2EC4B6;
+  --accent-secondary-glow: rgba(46, 196, 182, 0.3);
 
+  --steel: #8A97A8;
+  --steel-dark: #505F73;
+  --text-dark: #0B1220;
+  --text-light: #F8FAFC;
+  --text-muted: #8A97A8;
+
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-hover: rgba(255, 159, 28, 0.4);
+  --glass-blur: blur(14px);
+
+  /* Radius */
   --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 22px;
+  --radius-card: 16px;
+  --radius-pill: 999px;
 
-  --transition: 0.35s cubic-bezier(.25,.8,.25,1);
+  /* Layered Soft Shadows */
+  --shadow-sm: 0 4px 12px rgba(11, 18, 32, 0.05);
+  --shadow-card: 0 12px 36px -4px rgba(11, 18, 32, 0.08), 0 4px 12px -2px rgba(11, 18, 32, 0.04);
+  --shadow-hover: 0 24px 48px -8px rgba(11, 18, 32, 0.14), 0 8px 20px -4px rgba(255, 159, 28, 0.12);
+  --shadow-glow: 0 0 32px rgba(255, 159, 28, 0.3);
 
-  --font-heading: 'Poppins', 'Montserrat', system-ui, sans-serif;
-  --font-body:    'Inter', system-ui, sans-serif;
+  /* Typography */
+  --font-heading: 'Outfit', 'Sora', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 
-  --max-width: 1200px;
-  --navbar-h:  70px;
+  --max-width: 1240px;
+  --navbar-h: 74px;
 }
 
-/* ── Reset ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* Reset & Box Sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 html {
   scroll-behavior: smooth;
@@ -42,134 +64,277 @@ html {
 
 body {
   font-family: var(--font-body);
-  color: var(--text);
-  background: var(--white);
-  line-height: 1.65;
+  color: var(--text-dark);
+  background-color: var(--bg-dark);
+  line-height: 1.6;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-img { max-width: 100%; display: block; }
-a { color: inherit; text-decoration: none; }
-ul, ol { list-style: none; }
-button { cursor: pointer; border: none; background: none; font-family: inherit; }
+/* Image & Media */
+img,
+picture,
+video {
+  max-width: 100%;
+  display: block;
+}
 
-/* ── Typography ── */
-h1, h2, h3, h4, h5 {
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  color: inherit;
+}
+
+/* Scroll Progress Bar at Top */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent-gradient);
+  z-index: 2000;
+  transform-origin: 0%;
+  box-shadow: 0 0 10px rgba(255, 159, 28, 0.8);
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   font-weight: 700;
-  line-height: 1.2;
-  color: var(--primary);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
-/* ── Utility Classes ── */
+/* Fluid Container */
 .container {
   width: 100%;
   max-width: var(--max-width);
   margin-inline: auto;
-  padding-inline: 1.25rem;
+  padding-inline: 1.5rem;
 }
 
-.section-padding { padding-block: 5rem 4rem; }
+@media (max-width: 640px) {
+  .container {
+    padding-inline: 1.1rem;
+  }
+}
 
+.section-padding {
+  padding-block: clamp(4.5rem, 8vw, 7.5rem);
+}
+
+/* Section Header with Drawing Line */
 .section-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
-.section-label {
-  display: inline-block;
-  font-size: .75rem;
-  font-weight: 600;
-  letter-spacing: .15em;
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--accent);
-  background: rgba(245,166,35,.12);
-  padding: .3rem .9rem;
-  border-radius: 50px;
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
+}
+
+.section-eyebrow::before,
+.section-eyebrow::after {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
 }
 
 .section-title {
-  font-size: clamp(1.6rem, 4vw, 2.4rem);
-  color: var(--primary);
-  margin-bottom: .75rem;
+  font-size: clamp(1.85rem, 5vw, 3rem);
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+  line-height: 1.15;
+}
+
+.section-title.light {
+  color: var(--text-light);
 }
 
 .section-desc {
-  font-size: 1rem;
-  color: var(--text-muted);
-  max-width: 560px;
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  color: var(--steel-dark);
+  max-width: 620px;
   margin-inline: auto;
+  line-height: 1.65;
 }
 
-/* ── Blueprint grid background ── */
-.blueprint-bg {
-  position: relative;
+.section-desc.light {
+  color: var(--steel);
 }
-.blueprint-bg::before {
+
+/* Gradient Text Helper */
+.gradient-text {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.teal-text {
+  color: var(--accent-secondary);
+}
+
+/* Animated Blueprint Grid Background */
+.blueprint-drift {
+  position: relative;
+  background-color: var(--bg-dark);
+}
+
+.blueprint-drift::before {
   content: '';
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(245,166,35,.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(245,166,35,.06) 1px, transparent 1px);
-  background-size: 40px 40px;
+    linear-gradient(rgba(255, 159, 28, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 159, 28, 0.05) 1px, transparent 1px),
+    linear-gradient(rgba(46, 196, 182, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46, 196, 182, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px, 60px 60px, 15px 15px, 15px 15px;
+  background-position: 0 0;
   pointer-events: none;
+  animation: gridDrift 40s linear infinite;
   z-index: 0;
 }
-.blueprint-bg > * { position: relative; z-index: 1; }
 
-/* ── Accent button ── */
-.btn-accent {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  padding: .82rem 1.75rem;
-  background: var(--accent);
-  color: var(--primary);
-  font-weight: 700;
-  font-size: .95rem;
-  border-radius: var(--radius-sm);
-  min-height: 48px;
-  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
-  box-shadow: 0 4px 15px rgba(245,166,35,.4);
-}
-.btn-accent:active { transform: scale(.97); }
-
-.btn-outline {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  padding: .82rem 1.75rem;
-  background: transparent;
-  color: var(--white);
-  font-weight: 600;
-  font-size: .95rem;
-  border-radius: var(--radius-sm);
-  border: 2px solid rgba(255,255,255,.5);
-  min-height: 48px;
-  transition: background var(--transition), border-color var(--transition), color var(--transition);
-}
-.btn-outline:active { opacity: .8; }
-
-/* ── Scroll reveal (initial hidden state) ── */
-.reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity .6s ease, transform .6s ease;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: none;
-}
-
-/* ── Reduced-motion override ── */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: .01ms !important;
+@keyframes gridDrift {
+  0% {
+    background-position: 0 0;
   }
-  .reveal { opacity: 1 !important; transform: none !important; }
+  100% {
+    background-position: 60px 60px;
+  }
 }
 
+.blueprint-drift > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Glass Card */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-card);
+}
+
+/* Primary Shine Sweep Button */
+.btn-primary-shine {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.95rem 2rem;
+  background: var(--accent-gradient);
+  color: #0B1220;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.96rem;
+  border-radius: var(--radius-pill);
+  min-height: 48px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(255, 159, 28, 0.35);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 1;
+}
+
+.btn-primary-shine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transform: skewX(-20deg);
+  transition: none;
+}
+
+.btn-primary-shine:hover::after {
+  left: 140%;
+  transition: left 0.75s ease-in-out;
+}
+
+.btn-primary-shine:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(255, 159, 28, 0.5);
+}
+
+.btn-primary-shine:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* Secondary Glass Button */
+.btn-glass {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.95rem 1.9rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-light);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.96rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  min-height: 48px;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-glass:active {
+  transform: translateY(1px);
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .blueprint-drift::before {
+    animation: none !important;
+  }
+}

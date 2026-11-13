@@ -1,128 +1,196 @@
 import { useState, useEffect, useCallback } from 'react'
-import { FaMapMarkerAlt, FaTimes } from 'react-icons/fa'
-import { PROJECTS, PROJECT_FILTERS } from '../data/content'
+import { motion, AnimatePresence } from 'framer-motion'
+import { LuMapPin, LuX, LuArrowUpRight, LuMessageSquare } from 'react-icons/lu'
+import { PROJECTS, PROJECT_FILTERS, WHATSAPP_NUMBER } from '../data/content'
 import './Projects.css'
 
-/* Modal component */
-function ProjectModal({ project, onClose }) {
+function ProjectDetailModal({ project, onClose }) {
   useEffect(() => {
-    // Close on ESC
-    const onKey = (e) => { if (e.key === 'Escape') onClose() }
-    window.addEventListener('keydown', onKey)
+    const handleKey = (e) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleKey)
     document.body.style.overflow = 'hidden'
     return () => {
-      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('keydown', handleKey)
       document.body.style.overflow = ''
     }
   }, [onClose])
 
+  const waMessage = encodeURIComponent(
+    `Hello Er. Salman! I saw your project "${project.title}" (${project.location}) on your website and would like to consult with you for a similar project.`
+  )
+  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${waMessage}`
+
   return (
-    <div
-      className="modal-overlay"
+    <motion.div
+      className="project-modal-backdrop"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose()
+      }}
       role="dialog"
       aria-modal="true"
       aria-label={project.title}
-      onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
-      <div className="modal-box">
-        <button className="modal-close" onClick={onClose} aria-label="Close modal">
-          <FaTimes aria-hidden="true" />
+      <motion.div
+        className="project-modal-dialog"
+        initial={{ opacity: 0, scale: 0.92, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.92, y: 20 }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <button
+          className="modal-close-btn"
+          onClick={onClose}
+          aria-label="Close project modal"
+        >
+          <LuX aria-hidden="true" />
         </button>
+
         <img
           src={project.img}
           alt={project.title}
-          className="modal-img"
+          className="modal-hero-img"
           loading="lazy"
         />
-        <div className="modal-content">
-          <span className="modal-category">{project.category}</span>
+
+        <div className="modal-body">
+          <span className="modal-pill">{project.category}</span>
           <h3 className="modal-title">{project.title}</h3>
           <p className="modal-location">
-            <FaMapMarkerAlt aria-hidden="true" /> {project.location}
+            <LuMapPin aria-hidden="true" />
+            <span>{project.location}</span>
           </p>
+
           <p className="modal-desc">{project.desc}</p>
+
           <div className="modal-tags">
-            {project.tags.map((t) => (
-              <span key={t} className="modal-tag">{t}</span>
+            {project.tags.map((tag) => (
+              <span key={tag} className="modal-tag-chip">
+                {tag}
+              </span>
             ))}
           </div>
+
+          <a
+            href={waUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="modal-inquire-btn"
+            aria-label={`Inquire about ${project.title} on WhatsApp`}
+          >
+            <LuMessageSquare aria-hidden="true" />
+            <span>Inquire About Similar Project</span>
+          </a>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }
 
 export default function Projects() {
-  const [active, setActive] = useState('All')
-  const [selected, setSelected] = useState(null)
+  const [activeFilter, setActiveFilter] = useState('All')
+  const [selectedProject, setSelectedProject] = useState(null)
 
-  const filtered = active === 'All'
+  const filtered = activeFilter === 'All'
     ? PROJECTS
-    : PROJECTS.filter((p) => p.category === active)
+    : PROJECTS.filter((p) => p.category === activeFilter)
 
-  const openModal = useCallback((p) => setSelected(p), [])
-  const closeModal = useCallback(() => setSelected(null), [])
+  const openModal = useCallback((p) => setSelectedProject(p), [])
+  const closeModal = useCallback(() => setSelectedProject(null), [])
 
   return (
-    <section className="projects section-padding" id="projects">
+    <section className="projects-section section-padding" id="projects" aria-label="Portfolio Projects">
       <div className="container">
         <div className="section-header">
-          <span className="section-label">Our Work</span>
-          <h2 className="section-title">Featured Projects</h2>
+          <span className="section-eyebrow">Portfolio Showcase</span>
+          <h2 className="section-title">Selected Architectural & Civil Works</h2>
           <p className="section-desc">
-            A selection of residential, commercial, and interior projects we have delivered.
+            Explore our curated selection of residential duplexes, commercial complexes, luxury interiors, and 3D architectural renders.
           </p>
         </div>
 
-        {/* Filter bar */}
-        <div className="filter-bar" role="group" aria-label="Project filters">
-          {PROJECT_FILTERS.map((f) => (
-            <button
-              key={f}
-              className={`filter-btn ${active === f ? 'active' : ''}`}
-              onClick={() => setActive(f)}
-              aria-pressed={active === f}
-            >
-              {f}
-            </button>
-          ))}
+        {/* Filter Pills with Animated Active Indicator */}
+        <div className="projects-filter-bar" role="tablist" aria-label="Filter projects by category">
+          {PROJECT_FILTERS.map((f) => {
+            const isActive = activeFilter === f
+            return (
+              <button
+                key={f}
+                className={`filter-pill-btn ${isActive ? 'active' : ''}`}
+                onClick={() => setActiveFilter(f)}
+                role="tab"
+                aria-selected={isActive}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="activePill"
+                    className="active-pill-bg"
+                    transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+                  />
+                )}
+                <span>{f}</span>
+              </button>
+            )
+          })}
         </div>
 
-        {/* Grid */}
-        <div className="projects-grid">
-          {filtered.map((p, i) => (
-            <article
-              key={p.id}
-              className="project-card reveal"
-              style={{ transitionDelay: `${i * 0.07}s` }}
-              onClick={() => openModal(p)}
-              onKeyDown={(e) => { if (e.key === 'Enter') openModal(p) }}
-              tabIndex={0}
-              role="button"
-              aria-label={`View ${p.title}`}
-            >
-              <div className="project-img-wrap">
-                <img
-                  src={p.img}
-                  alt={p.title}
-                  className="project-img"
-                  loading="lazy"
-                />
-                <span className="project-category-badge">{p.category}</span>
-              </div>
-              <div className="project-info">
-                <h3 className="project-title">{p.title}</h3>
-                <p className="project-location">
-                  <FaMapMarkerAlt aria-hidden="true" /> {p.location}
-                </p>
-              </div>
-            </article>
-          ))}
-        </div>
+        {/* Masonry Grid */}
+        <motion.div className="projects-grid" layout>
+          <AnimatePresence>
+            {filtered.map((p) => (
+              <motion.article
+                key={p.id}
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.4 }}
+                className="project-card"
+                onClick={() => openModal(p)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') openModal(p)
+                }}
+                tabIndex={0}
+                role="button"
+                aria-label={`View project details for ${p.title}`}
+              >
+                <div className="project-img-wrapper">
+                  <img
+                    src={p.img}
+                    alt={p.title}
+                    className="project-card-img"
+                    loading="lazy"
+                  />
+                  <span className="project-category-tag">{p.category}</span>
+
+                  <div className="project-card-overlay">
+                    <h3 className="project-overlay-title">{p.title}</h3>
+                    <div className="project-overlay-meta">
+                      <span className="project-overlay-location">
+                        <LuMapPin aria-hidden="true" />
+                        <span>{p.location}</span>
+                      </span>
+                      <div className="project-overlay-arrow" aria-hidden="true">
+                        <LuArrowUpRight />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.article>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
 
-      {selected && <ProjectModal project={selected} onClose={closeModal} />}
+      <AnimatePresence>
+        {selectedProject && (
+          <ProjectDetailModal project={selectedProject} onClose={closeModal} />
+        )}
+      </AnimatePresence>
     </section>
   )
 }
-

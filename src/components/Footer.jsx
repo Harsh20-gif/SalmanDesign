@@ -1,55 +1,77 @@
 import {
-  FaHardHat, FaPhone, FaEnvelope, FaMapMarkerAlt,
-  FaChevronRight, FaChevronUp,
-} from 'react-icons/fa'
-import { COMPANY, PHONE_DISPLAY, PHONE, EMAIL, ADDRESS, SERVICES } from '../data/content'
+  LuCompass,
+  LuPhone,
+  LuMail,
+  LuMapPin,
+  LuChevronRight,
+  LuArrowUp,
+} from 'react-icons/lu'
+import {
+  COMPANY,
+  PHONE_DISPLAY,
+  PHONE,
+  EMAIL,
+  ADDRESS,
+  SERVICES,
+} from '../data/content'
 import './Footer.css'
 
-const NAV_LINKS = [
-  { label: 'Home',         href: '#home' },
-  { label: 'About Us',    href: '#about' },
-  { label: 'Services',    href: '#services' },
-  { label: 'Projects',    href: '#projects' },
+const FOOTER_LINKS = [
+  { label: 'Home Overview', href: '#home' },
+  { label: 'About Studio', href: '#about' },
+  { label: 'Core Services', href: '#services' },
+  { label: 'Featured Portfolio', href: '#projects' },
   { label: 'How We Work', href: '#process' },
-  { label: 'Contact',     href: '#contact' },
+  { label: 'Client Feedback', href: '#testimonials' },
+  { label: 'Contact Us', href: '#contact' },
 ]
 
 export default function Footer() {
-  const year = new Date().getFullYear()
+  const currentYear = new Date().getFullYear()
 
   const scrollTo = (href) => {
     document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
-    <footer className="footer" role="contentinfo">
+    <footer className="footer-wrap" role="contentinfo">
       <div className="container">
-        <div className="footer-grid">
-          {/* Brand */}
-          <div className="footer-brand">
-            <div className="footer-logo">
-              <FaHardHat className="footer-logo-icon" aria-hidden="true" />
-              {COMPANY.name}
-            </div>
-            <p className="footer-tagline">
-              {COMPANY.tagline} — Expert civil engineering, architectural design,
-              and 3D visualization services in Nehtaur, Bijnor, UP.
+        {/* Giant Architectural Brand Wordmark */}
+        <div className="footer-wordmark-wrap" aria-hidden="true">
+          <span className="footer-wordmark">Salman Design</span>
+        </div>
+
+        <div className="footer-main-grid">
+          {/* Brand & Qualification */}
+          <div className="footer-col-brand">
+            <h3 className="footer-brand-title">
+              <LuCompass aria-hidden="true" />
+              <span>{COMPANY.name}</span>
+            </h3>
+            <p className="footer-brand-tagline">
+              {COMPANY.tagline} — Professional civil engineering consultancy, turnkey architectural design, and photorealistic 3D visualization.
+            </p>
+            <p style={{ fontSize: '0.85rem', color: 'var(--accent)' }}>
+              Head Engineer: {COMPANY.owner}, {COMPANY.qualification}
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="footer-col-title">Quick Links</h3>
-            <ul className="footer-links">
-              {NAV_LINKS.map((l) => (
-                <li key={l.href}>
+            <h4 className="footer-col-heading">Navigation</h4>
+            <ul className="footer-link-list">
+              {FOOTER_LINKS.map((link) => (
+                <li key={link.href}>
                   <a
-                    href={l.href}
-                    className="footer-link"
-                    onClick={(e) => { e.preventDefault(); scrollTo(l.href) }}
+                    href={link.href}
+                    className="footer-nav-link"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      scrollTo(link.href)
+                    }}
                   >
-                    <FaChevronRight aria-hidden="true" />
-                    {l.label}
+                    <LuChevronRight aria-hidden="true" />
+                    <span>{link.label}</span>
                   </a>
                 </li>
               ))}
@@ -58,60 +80,67 @@ export default function Footer() {
 
           {/* Services */}
           <div>
-            <h3 className="footer-col-title">Services</h3>
-            <ul className="footer-links">
+            <h4 className="footer-col-heading">Our Practices</h4>
+            <ul className="footer-link-list">
               {SERVICES.map((s) => (
                 <li key={s.id}>
                   <a
                     href="#services"
-                    className="footer-link"
-                    onClick={(e) => { e.preventDefault(); scrollTo('#services') }}
+                    className="footer-nav-link"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      scrollTo('#services')
+                    }}
                   >
-                    <FaChevronRight aria-hidden="true" />
-                    {s.title}
+                    <LuChevronRight aria-hidden="true" />
+                    <span>{s.title}</span>
                   </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Contact Details */}
           <div>
-            <h3 className="footer-col-title">Contact Info</h3>
-            <div className="footer-contact-item">
-              <FaPhone className="footer-contact-icon" aria-hidden="true" />
-              <a href={`tel:${PHONE}`}>{PHONE_DISPLAY}</a>
-            </div>
-            <div className="footer-contact-item">
-              <FaEnvelope className="footer-contact-icon" aria-hidden="true" />
-              <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
-            </div>
-            <div className="footer-contact-item">
-              <FaMapMarkerAlt className="footer-contact-icon" aria-hidden="true" />
-              <span>
-                {ADDRESS.line1},<br />
-                {ADDRESS.line2},<br />
-                {ADDRESS.state} – {ADDRESS.pin}
-              </span>
+            <h4 className="footer-col-heading">Studio Office</h4>
+            <div className="footer-contact-info-list">
+              <div className="footer-contact-row">
+                <LuPhone aria-hidden="true" />
+                <a href={`tel:${PHONE}`}>{PHONE_DISPLAY}</a>
+              </div>
+              <div className="footer-contact-row">
+                <LuMail aria-hidden="true" />
+                <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+              </div>
+              <div className="footer-contact-row">
+                <LuMapPin aria-hidden="true" />
+                <span>
+                  {ADDRESS.line1},<br />
+                  {ADDRESS.line2},<br />
+                  {ADDRESS.state} – {ADDRESS.pin}
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="footer-bottom">
-          <p className="footer-copyright">
-            © {year} {COMPANY.name}. All rights reserved.
+        {/* Bottom Bar */}
+        <div className="footer-bottom-bar">
+          <p className="footer-copyright-text">
+            © {currentYear} {COMPANY.name}. All rights reserved.
           </p>
+
           <button
-            className="back-to-top"
+            type="button"
+            className="footer-back-to-top"
             onClick={() => scrollTo('#home')}
-            aria-label="Back to top"
+            aria-label="Scroll back to top"
           >
-            <FaChevronUp aria-hidden="true" /> Back to Top
+            <span>Back to top</span>
+            <LuArrowUp aria-hidden="true" />
           </button>
         </div>
       </div>
     </footer>
   )
 }
-

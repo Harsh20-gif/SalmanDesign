@@ -1,34 +1,50 @@
+import { motion } from 'framer-motion'
 import { PROCESS_STEPS } from '../data/content'
 import './Process.css'
 
 export default function Process() {
   return (
-    <section className="process section-padding blueprint-bg" id="process">
+    <section className="process-section section-padding blueprint-drift" id="process" aria-label="Our Work Process">
       <div className="container">
         <div className="section-header">
-          <span className="section-label">Our Workflow</span>
-          <h2 className="section-title" style={{ color: 'var(--white)' }}>How We Work</h2>
-          <p className="section-desc" style={{ color: 'rgba(255,255,255,.65)' }}>
-            A transparent, milestone-driven process from first call to final handover.
+          <span className="section-eyebrow">Our Methodology</span>
+          <h2 className="section-title light">How We Build Your Dreams</h2>
+          <p className="section-desc light">
+            A structured, transparent 4-stage engineering lifecycle ensuring zero budget surprises and timely handover.
           </p>
         </div>
 
-        <div className="timeline" role="list">
-          {PROCESS_STEPS.map((step, i) => (
-            <div
-              key={step.step}
-              className="timeline-item reveal"
-              style={{ transitionDelay: `${i * 0.12}s` }}
-              role="listitem"
-            >
-              <div className="timeline-dot" aria-hidden="true">{step.step}</div>
-              <h3 className="timeline-title">{step.title}</h3>
-              <p className="timeline-desc">{step.desc}</p>
-            </div>
-          ))}
+        <div className="process-timeline-wrap">
+          <motion.div
+            className="process-track-line"
+            aria-hidden="true"
+            initial={{ scaleX: 0, scaleY: 0 }}
+            whileInView={{ scaleX: 1, scaleY: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          />
+
+          <div className="process-grid" role="list">
+            {PROCESS_STEPS.map((step, idx) => (
+              <motion.div
+                key={step.step}
+                className="process-step-item"
+                role="listitem"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.55, delay: idx * 0.12 }}
+              >
+                <div className="process-number-badge" aria-hidden="true">
+                  <span>{step.step}</span>
+                </div>
+                <h3 className="process-step-title">{step.title}</h3>
+                <p className="process-step-desc">{step.desc}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
   )
 }
-
