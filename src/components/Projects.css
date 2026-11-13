@@ -1,0 +1,207 @@
+/* ── Projects Section ── */
+.projects {
+  background: var(--concrete);
+}
+
+/* Filter bar */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+}
+
+.filter-btn {
+  padding: .5rem 1.1rem;
+  border-radius: 50px;
+  font-size: .85rem;
+  font-weight: 600;
+  min-height: 40px;
+  border: 2px solid transparent;
+  background: var(--white);
+  color: var(--steel);
+  transition: all var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.filter-btn.active,
+.filter-btn:active {
+  background: var(--primary);
+  color: var(--white);
+  border-color: var(--primary);
+}
+
+/* Grid */
+.projects-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.4rem;
+}
+
+/* Project card */
+.project-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition);
+  border: 1px solid rgba(15,27,45,.06);
+}
+
+@media (hover: hover) {
+  .project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-md);
+  }
+}
+.project-card:active {
+  transform: scale(.98);
+  box-shadow: var(--shadow-sm);
+}
+
+.project-img-wrap {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: var(--concrete);
+}
+
+.project-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .6s ease;
+  display: block;
+}
+
+@media (hover: hover) {
+  .project-card:hover .project-img { transform: scale(1.06); }
+}
+
+.project-category-badge {
+  position: absolute;
+  top: .75rem;
+  left: .75rem;
+  background: var(--accent);
+  color: var(--primary);
+  font-size: .72rem;
+  font-weight: 700;
+  padding: .25rem .65rem;
+  border-radius: 50px;
+  letter-spacing: .04em;
+}
+
+.project-info {
+  padding: 1.2rem 1.3rem 1.4rem;
+}
+
+.project-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: .3rem;
+}
+
+.project-location {
+  font-size: .82rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+
+/* Modal / Lightbox */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,15,25,.85);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: fadeIn .2s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+
+.modal-box {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  max-width: 640px;
+  width: 100%;
+  max-height: 90svh;
+  overflow-y: auto;
+  animation: slideUp .3s ease;
+  position: relative;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+.modal-close {
+  position: absolute;
+  top: .75rem;
+  right: .75rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(15,27,45,.7);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  z-index: 10;
+  transition: background var(--transition);
+}
+.modal-close:active { background: var(--accent); }
+
+.modal-img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+
+.modal-content { padding: 1.5rem 1.75rem 2rem; }
+
+.modal-category {
+  display: inline-block;
+  background: rgba(245,166,35,.12);
+  color: var(--accent);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  padding: .2rem .7rem;
+  border-radius: 50px;
+  margin-bottom: .75rem;
+}
+
+.modal-title { font-size: 1.3rem; margin-bottom: .5rem; }
+.modal-location { font-size: .85rem; color: var(--text-muted); margin-bottom: 1rem; }
+.modal-desc { font-size: .92rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1.2rem; }
+
+.modal-tags { display: flex; flex-wrap: wrap; gap: .5rem; }
+.modal-tag {
+  background: var(--concrete);
+  color: var(--steel);
+  font-size: .78rem;
+  font-weight: 600;
+  padding: .25rem .7rem;
+  border-radius: 50px;
+}
+
+@media (min-width: 640px) {
+  .projects-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (min-width: 1024px) {
+  .projects-grid { grid-template-columns: repeat(3, 1fr); }
+}
+

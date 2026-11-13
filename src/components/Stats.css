@@ -1,0 +1,64 @@
+/* ── Stats Strip ── */
+.stats {
+  background: var(--primary);
+  padding: 3.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.stats::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(245,166,35,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245,166,35,.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 1rem;
+}
+
+.stat-number {
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 7vw, 3.5rem);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: .1em;
+}
+
+.stat-suffix {
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  color: var(--accent);
+  line-height: 1;
+  font-weight: 800;
+}
+
+.stat-label {
+  margin-top: .5rem;
+  font-size: .85rem;
+  color: rgba(255,255,255,.65);
+  letter-spacing: .05em;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+  .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+}
+
