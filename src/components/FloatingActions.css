@@ -14,7 +14,7 @@
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-full);
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 20px rgba(255, 159, 28, 0.2);
 }
 
@@ -25,10 +25,10 @@
   justify-content: center;
   gap: 0.55rem;
   height: 46px;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-full);
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 0.92rem;
+  font-size: var(--text-sm);
   text-decoration: none;
   transition: transform 0.2s ease;
   user-select: none;
@@ -40,18 +40,18 @@
 
 .dock-btn-whatsapp {
   background: #25D366;
-  color: #FFFFFF;
+  color: var(--text-light-primary);
   box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);
 }
 
 .dock-btn-call {
   background: var(--accent-gradient);
-  color: #0B1220;
+  color: var(--text-dark-primary);
   box-shadow: 0 4px 14px rgba(255, 159, 28, 0.35);
 }
 
 .dock-btn-icon {
-  font-size: 1.15rem;
+  font-size: var(--text-base);
 }
 
 /* Hide on desktop/tablets where top header CTA is always visible */
@@ -60,3 +60,4 @@
     display: none;
   }
 }
+

@@ -1,7 +1,7 @@
 /* ── Footer (Dark Architectural Brand) ── */
 .footer-wrap {
   background: #060B14;
-  color: var(--steel);
+  color: var(--text-light-subtle);
   position: relative;
   overflow: hidden;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -47,9 +47,9 @@
 
 .footer-brand-title {
   font-family: var(--font-heading);
-  font-size: 1.35rem;
+  font-size: var(--text-lg);
   font-weight: 800;
-  color: #FFFFFF;
+  color: var(--text-light-primary);
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -60,19 +60,19 @@
 }
 
 .footer-brand-tagline {
-  font-size: 0.94rem;
-  color: var(--steel);
+  font-size: var(--text-sm);
+  color: var(--text-light-subtle);
   line-height: 1.65;
   max-width: 320px;
 }
 
 .footer-col-heading {
   font-family: var(--font-heading);
-  font-size: 0.88rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #FFFFFF;
+  color: var(--text-light-primary);
   margin-bottom: 1.2rem;
 }
 
@@ -83,8 +83,8 @@
 }
 
 .footer-nav-link {
-  font-size: 0.92rem;
-  color: var(--steel);
+  font-size: var(--text-sm);
+  color: var(--text-light-subtle);
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -108,14 +108,14 @@
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
-  font-size: 0.9rem;
-  color: var(--steel);
+  font-size: var(--text-sm);
+  color: var(--text-light-subtle);
   line-height: 1.5;
 }
 
 .footer-contact-row svg {
   color: var(--accent);
-  font-size: 1.1rem;
+  font-size: var(--text-base);
   flex-shrink: 0;
   margin-top: 0.2rem;
 }
@@ -136,8 +136,8 @@
 }
 
 .footer-copyright-text {
-  font-size: 0.84rem;
-  color: rgba(138, 151, 168, 0.7);
+  font-size: var(--text-xs);
+  color: var(--text-light-subtle);
 }
 
 .footer-back-to-top {
@@ -147,17 +147,19 @@
   padding: 0.5rem 1.2rem;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-pill);
-  color: var(--text-light);
+  border-radius: var(--radius-full);
+  color: var(--text-light-primary);
   font-family: var(--font-heading);
-  font-size: 0.84rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   transition: all 0.25s ease;
+  min-height: 38px;
+  cursor: pointer;
 }
 
 .footer-back-to-top:hover {
   background: var(--accent);
-  color: #0B1220;
+  color: var(--text-dark-primary);
   border-color: var(--accent);
 }
 

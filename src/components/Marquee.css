@@ -54,9 +54,9 @@
   align-items: center;
   gap: 0.8rem;
   font-family: var(--font-heading);
-  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  font-size: var(--text-base);
   font-weight: 700;
-  color: var(--text-light);
+  color: var(--text-light-primary);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   white-space: nowrap;
@@ -66,13 +66,13 @@
   width: 6px;
   height: 6px;
   background: var(--accent);
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   box-shadow: 0 0 10px rgba(255, 159, 28, 0.8);
   flex-shrink: 0;
 }
 
 .marquee-highlight {
-  color: var(--accent);
+  color: var(--text-accent-primary);
 }
 
 @keyframes marqueeScroll {
@@ -89,3 +89,4 @@
     animation: none;
   }
 }
+
