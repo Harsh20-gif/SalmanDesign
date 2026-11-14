@@ -7,8 +7,8 @@
 
 .services-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.8rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
 }
 
 /* Card 3D Flip Container */
@@ -169,14 +169,81 @@
   color: #0B1220;
 }
 
-@media (min-width: 640px) {
-  .services-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.mobile-hint {
+  display: none;
 }
 
 @media (min-width: 1024px) {
   .services-grid {
     grid-template-columns: repeat(3, 1fr);
+    gap: 1.8rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .desktop-hint {
+    display: none;
+  }
+
+  .mobile-hint {
+    display: inline;
+  }
+
+  .service-flip-card {
+    height: 240px;
+    border-radius: var(--radius-md);
+  }
+
+  .service-flip-inner {
+    border-radius: var(--radius-md);
+  }
+
+  .flip-front,
+  .flip-back {
+    padding: 1.1rem 0.85rem;
+    border-radius: var(--radius-md);
+  }
+
+  .service-icon-box {
+    width: 44px;
+    height: 44px;
+    font-size: 1.25rem;
+    border-radius: var(--radius-md);
+  }
+
+  .service-card-title {
+    font-size: clamp(0.85rem, 3.2vw, 1.05rem);
+    margin-top: 0.6rem;
+    line-height: 1.25;
+  }
+
+  .flip-hint-tag {
+    font-size: 0.65rem;
+    gap: 0.25rem;
+  }
+
+  .flip-back-title {
+    font-size: 0.88rem;
+  }
+
+  .flip-back-desc {
+    font-size: 0.72rem;
+    line-height: 1.38;
+    margin-block: 0.35rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .flip-back-action {
+    font-size: 0.72rem;
+    padding: 0.35rem 0.75rem;
+    min-height: 32px;
   }
 }

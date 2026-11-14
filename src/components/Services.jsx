@@ -79,7 +79,8 @@ function ServiceCard({ svc, index }) {
 
           <div className="flip-hint-tag">
             <LuRotateCw aria-hidden="true" />
-            <span>Hover / Tap to view details</span>
+            <span className="desktop-hint">Hover / Tap to view details</span>
+            <span className="mobile-hint">Tap for details</span>
           </div>
         </div>
 
