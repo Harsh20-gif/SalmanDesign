@@ -261,11 +261,6 @@ h6 {
   }
 }
 
-.blueprint-drift > * {
-  position: relative;
-  z-index: 1;
-}
-
 /* Glass Card */
 .glass-panel {
   background: var(--glass-bg);

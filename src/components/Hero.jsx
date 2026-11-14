@@ -51,8 +51,10 @@ export default function Hero() {
   return (
     <section className="hero blueprint-drift" id="home" aria-label="Hero Section">
       {/* Background Soft Glows */}
-      <div className="hero-glow-1" aria-hidden="true" />
-      <div className="hero-glow-2" aria-hidden="true" />
+      <div className="hero-glows" aria-hidden="true">
+        <div className="hero-glow-1" />
+        <div className="hero-glow-2" />
+      </div>
 
       <div className="container hero-inner">
         {/* Left Column: Headline & Action */}
